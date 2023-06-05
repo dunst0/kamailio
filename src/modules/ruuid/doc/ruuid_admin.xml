@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding='ISO-8859-1'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" [
+
+<!-- Include general documentation entities -->
+<!ENTITY % docentities SYSTEM "../../../../doc/docbook/entities.xml">
+%docentities;
+
+]>
+<!-- Module User's Guide -->
+
+<chapter>
+	
+	<title>&adminguide;</title>
+	
+	<section>
+	<title>Overview</title>
+	<para>
+		This module exports the $uuid_nil(format), $uuid4(format) and $uuid5_sip(format) class
+		of variables that return unique values using functions from the rust uuid library.
+	</para>
+	</section>
+
+	<section>
+	<title>Dependencies</title>
+	<section>
+		<title>&kamailio; Modules</title>
+		<para>
+		The following modules must be loaded before this module:
+			<itemizedlist>
+			<listitem>
+			<para>
+				<emphasis>none</emphasis>.
+			</para>
+			</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+	<section>
+		<title>External Libraries or Applications</title>
+		<para>
+		The following libraries or applications must be installed before running
+		&kamailio; with this module loaded:
+			<itemizedlist>
+			<listitem>
+			<para>
+				<emphasis>none</emphasis>.
+			</para>
+			</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+	</section>
+	<section>
+		<title>Usage</title>
+		<para>
+			The following variables can be used:
+			<itemizedlist>
+			<listitem>
+			<para>
+				<emphasis>$uuid_nil(s)</emphasis> - return the nil UUID value in simple format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid_nil(h)</emphasis> - return the nil UUID value in hyphenated format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid_nil(b)</emphasis> - return the nil UUID value in braced format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid_nil(u)</emphasis> - return the nil UUID value in urn format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid4(s)</emphasis> - return the version 4 UUID value in simple format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid4(h)</emphasis> - return the version 4 UUID value in hyphenated format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid4(b)</emphasis> - return the version 4 UUID value in braced format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid4(u)</emphasis> - return the version 4 UUID value in urn format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(sf)</emphasis> - return the version 5 UUID with the namespace for
+				SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value in simple format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(st)</emphasis> - return the version 5 UUID with the namespace for
+				SIP as defined in RFC 7989 and as name `Call-Id || To-Tag` value in simple format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(hf)</emphasis> - return the version 5 UUID with the namespace for
+				SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value in hyphenated format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(ht)</emphasis> - return the version 5 UUID with the SIP namespace
+				and as name `Call-Id || To-Tag` value in hyphenated format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(bf)</emphasis> - return the version 5 UUID with the namespace for
+				SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value in braced format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(bt)</emphasis> - return the version 5 UUID with the namespace for
+				SIP as defined in RFC 7989 and as name `Call-Id || To-Tag` value in braced format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(uf)</emphasis> - return the version 5 UUID with the namespace for
+				SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value in urn format.
+			</para>
+			</listitem>
+			<listitem>
+			<para>
+				<emphasis>$uuid5_sip(ut)</emphasis> - return the version 5 UUID with the namespace for
+				SIP as defined in RFC 7989 and as name `Call-Id || To-Tag` value in urn format.
+			</para>
+			</listitem>
+			</itemizedlist>
+		</para>
+		<example>
+		<title><function>$uuid5_sip(format)</function> usage</title>
+		<programlisting format="linespecific">
+...
+$var(uuid) = $uuid5_sip(sf);
+xdbg("generated uuid is [$var(uuid)]\n");
+append_hf("Session-ID: $uuid5_sip(sf); remote=$uuid_nil(s)\r\n");
+...
+</programlisting>
+	    </example>
+
+	</section>
+
+
+	<section>
+		<title>Functions</title>
+		<section id="ruuid.f.uuid_is_nil">
+			<title>
+				<function moreinfo="none">uuid_is_nil(uuid)</function>
+			</title>
+			<para>
+				Parses the given uuid and return true if
+				the UUID was a nil UUID or false if not.
+			</para>
+			<para>Meaning of the parameters is as follows:</para>
+			<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>uuid</emphasis> - The UUID to test for nil UUID
+				</para>
+			</listitem>
+			</itemizedlist>
+			<para>Return codes:</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						<emphasis>1 (true)</emphasis> - UUID is nil UUID
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>-1 (false)</emphasis> - UUID is not nil UUID
+					</para>
+					<warning>
+						IMPORTANT: in case of internal error, the function returns false to
+						avoid reporting the current UUID as nil UUID.
+					</warning>
+				</listitem>
+			</itemizedlist>
+			<para>
+				This function can be used from ANY_ROUTE.
+			</para>
+			<example>
+				<title><function>uuid_is_nil</function> usage</title>
+				<programlisting format="linespecific">
+...
+if (uuid_is_nil("00000000-0000-0000-0000-000000000000")) {
+    xdbg("The UUID is the nil UUID\n");
+}
+
+if (!uuid_is_nil("67e55044-10b1-426f-9247-bb680e5fe0c8") {
+    xdbg("The UUID is NOT the nil UUID\n");
+}
+...
+				</programlisting>
+			</example>
+		</section>
+	</section>
+</chapter>
+

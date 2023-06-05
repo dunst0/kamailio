@@ -1,0 +1,146 @@
+RUUID Module
+
+Rick Barenthin
+
+   <dunst0@gmail.com>
+
+Edited by
+
+Rick Barenthin
+
+   <rick@ng-voice.com>
+
+   Copyright © 2023 ng-voice.com
+     __________________________________________________________________
+
+   Table of Contents
+
+   1. Admin Guide
+
+        1. Overview
+        2. Dependencies
+
+              2.1. Kamailio Modules
+              2.2. External Libraries or Applications
+
+        3. Usage
+        4. Functions
+
+              4.1. uuid_is_nil(uuid)
+
+   List of Examples
+
+   1.1. $uuid5_sip(format) usage
+   1.2. uuid_is_nil usage
+
+Chapter 1. Admin Guide
+
+   Table of Contents
+
+   1. Overview
+   2. Dependencies
+
+        2.1. Kamailio Modules
+        2.2. External Libraries or Applications
+
+   3. Usage
+   4. Functions
+
+        4.1. uuid_is_nil(uuid)
+
+1. Overview
+
+   This module exports the $uuid_nil(format), $uuid4(format) and
+   $uuid5_sip(format) class of variables that return unique values using
+   functions from the rust uuid library.
+
+2. Dependencies
+
+   2.1. Kamailio Modules
+   2.2. External Libraries or Applications
+
+2.1. Kamailio Modules
+
+   The following modules must be loaded before this module:
+     * none.
+
+2.2. External Libraries or Applications
+
+   The following libraries or applications must be installed before
+   running Kamailio with this module loaded:
+     * none.
+
+3. Usage
+
+   The following variables can be used:
+     * $uuid_nil(s) - return the nil UUID value in simple format.
+     * $uuid_nil(h) - return the nil UUID value in hyphenated format.
+     * $uuid_nil(b) - return the nil UUID value in braced format.
+     * $uuid_nil(u) - return the nil UUID value in urn format.
+     * $uuid4(s) - return the version 4 UUID value in simple format.
+     * $uuid4(h) - return the version 4 UUID value in hyphenated format.
+     * $uuid4(b) - return the version 4 UUID value in braced format.
+     * $uuid4(u) - return the version 4 UUID value in urn format.
+     * $uuid5_sip(sf) - return the version 5 UUID with the namespace for
+       SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value
+       in simple format.
+     * $uuid5_sip(st) - return the version 5 UUID with the namespace for
+       SIP as defined in RFC 7989 and as name `Call-Id || To-Tag` value in
+       simple format.
+     * $uuid5_sip(hf) - return the version 5 UUID with the namespace for
+       SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value
+       in hyphenated format.
+     * $uuid5_sip(ht) - return the version 5 UUID with the SIP namespace
+       and as name `Call-Id || To-Tag` value in hyphenated format.
+     * $uuid5_sip(bf) - return the version 5 UUID with the namespace for
+       SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value
+       in braced format.
+     * $uuid5_sip(bt) - return the version 5 UUID with the namespace for
+       SIP as defined in RFC 7989 and as name `Call-Id || To-Tag` value in
+       braced format.
+     * $uuid5_sip(uf) - return the version 5 UUID with the namespace for
+       SIP as defined in RFC 7989 and as name `Call-Id || From-Tag` value
+       in urn format.
+     * $uuid5_sip(ut) - return the version 5 UUID with the namespace for
+       SIP as defined in RFC 7989 and as name `Call-Id || To-Tag` value in
+       urn format.
+
+   Example 1.1. $uuid5_sip(format) usage
+...
+$var(uuid) = $uuid5_sip(sf);
+xdbg("generated uuid is [$var(uuid)]\n");
+append_hf("Session-ID: $uuid5_sip(sf); remote=$uuid_nil(s)\r\n");
+...
+
+4. Functions
+
+   4.1. uuid_is_nil(uuid)
+
+4.1. uuid_is_nil(uuid)
+
+   Parses the given uuid and return true if the UUID was a nil UUID or
+   false if not.
+
+   Meaning of the parameters is as follows:
+     * uuid - The UUID to test for nil UUID
+
+   Return codes:
+     * 1 (true) - UUID is nil UUID
+     * -1 (false) - UUID is not nil UUID
+
+Warning
+       IMPORTANT: in case of internal error, the function returns false to
+       avoid reporting the current UUID as nil UUID.
+
+   This function can be used from ANY_ROUTE.
+
+   Example 1.2. uuid_is_nil usage
+...
+if (uuid_is_nil("00000000-0000-0000-0000-000000000000")) {
+    xdbg("The UUID is the nil UUID\n");
+}
+
+if (!uuid_is_nil("67e55044-10b1-426f-9247-bb680e5fe0c8") {
+    xdbg("The UUID is NOT the nil UUID\n");
+}
+...

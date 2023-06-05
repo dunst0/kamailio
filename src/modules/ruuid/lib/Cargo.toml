@@ -1,0 +1,16 @@
+[package]
+name = "ruuid"
+version = "0.1.0"
+authors = ["Rick Barenthin <dunst0@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libc = "0.2"
+uuid = { version = "1.3.2", features = ["v4", "v5" ]}
+
+[lib]
+name = "ruuid"
+path = "src/ruuid.rs"
+crate-type = ["staticlib", "cdylib"]
